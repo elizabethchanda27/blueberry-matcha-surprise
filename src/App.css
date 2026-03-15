@@ -524,11 +524,11 @@
   font-size: 1.25rem;
   font-weight: 600;
   color: #fff;
-  background: linear-gradient(135deg, #677ab4, #8884c9);
+  background: linear-gradient(135deg, #74a12e, #b9dca9);
   border: none;
   border-radius: 999px;
   text-decoration: none;
-  box-shadow: 0 4px 20px rgba(103, 122, 180, 0.45);
+  box-shadow: 0 4px 20px rgba(116, 161, 46, 0.45);
   cursor: pointer;
   transition: transform 0.2s, box-shadow 0.2s;
   opacity: 0;
@@ -546,14 +546,14 @@
 .cta--big {
   padding: 1rem 2rem;
   font-size: 1.35rem;
-  box-shadow: 0 6px 24px rgba(103, 122, 180, 0.5);
+  box-shadow: 0 6px 24px rgba(116, 161, 46, 0.5);
 }
 
 .cta:hover {
   transform: scale(1.05);
-  box-shadow: 0 6px 24px rgba(103, 122, 180, 0.55);
+  box-shadow: 0 6px 24px rgba(116, 161, 46, 0.55);
 }
 
 .cta--big:hover {
-  box-shadow: 0 8px 28px rgba(103, 122, 180, 0.6);
+  box-shadow: 0 8px 28px rgba(116, 161, 46, 0.6);
 }
