@@ -1,0 +1,559 @@
+/* Blueberry matcha swirl — circular so no rectangle shows when rotating */
+.swirl-bg {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  width: 200vmax;
+  height: 200vmax;
+  margin-left: -100vmax;
+  margin-top: -100vmax;
+  border-radius: 50%;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 50% 50%, #ffffff 0%, rgba(255, 255, 255, 0.7) 15%, transparent 35%),
+    conic-gradient(from 0deg at 50% 50%, #b9dca9, #74a12e, #677ab4, #8884c9, #ffffff, #b9dca9);
+  animation: swirl 14s linear infinite;
+  z-index: 0;
+}
+
+.swirl-bg::before {
+  content: '';
+  position: absolute;
+  inset: -40%;
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.95) 0%, transparent 45%);
+  z-index: 0;
+}
+
+/* Inward pull: gradient layer that appears to flow toward center */
+.swirl-bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 50% 50%,
+    transparent 0%,
+    transparent 25%,
+    rgba(136, 132, 201, 0.25) 45%,
+    rgba(103, 122, 180, 0.2) 65%,
+    rgba(116, 161, 46, 0.15) 85%
+  );
+  animation: pullIn 4s ease-in-out infinite;
+  z-index: 0;
+}
+
+.swirl-bg--soft {
+  animation-duration: 20s;
+  opacity: 0.92;
+}
+
+.swirl-bg--soft::after {
+  animation: pullIn 5s ease-in-out infinite;
+}
+
+@keyframes swirl {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Colors appear to flow toward the middle */
+@keyframes pullIn {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1.4);
+  }
+  50% {
+    opacity: 0.85;
+    transform: scale(0.7);
+  }
+}
+
+/* Blueberry matcha fill-up — fades in over first screen, then liquid rises */
+.fill-up-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  pointer-events: auto;
+  overflow: hidden;
+  background: #f5f8f5;
+  opacity: 0;
+  animation: fillScreenFadeIn 0.7s ease-out forwards;
+}
+
+@keyframes fillScreenFadeIn {
+  to {
+    opacity: 1;
+  }
+}
+
+.fill-up-loading-bg {
+  position: absolute;
+  inset: 0;
+  background: transparent;
+}
+
+/* Liquid fills from bottom (rises up) — water-like */
+.fill-up-water-fill {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 0;
+  background: linear-gradient(
+    to top,
+    rgba(103, 122, 180, 0.78) 0%,
+    rgba(136, 132, 201, 0.82) 20%,
+    rgba(116, 161, 46, 0.8) 45%,
+    rgba(185, 220, 169, 0.88) 70%,
+    rgba(220, 235, 210, 0.92) 88%,
+    rgba(255, 255, 255, 0.75) 100%
+  );
+  transform-origin: bottom;
+  transition: height 2.5s cubic-bezier(0.22, 0.61, 0.36, 1) 0.45s;
+  z-index: 1;
+  overflow: visible;
+  box-shadow: inset 0 20px 40px rgba(255, 255, 255, 0.08), inset 0 -15px 30px rgba(0, 0, 0, 0.06);
+}
+
+/* Wavy water surface at top — more pronounced, liquid look */
+.fill-up-water-fill::before {
+  content: '';
+  position: absolute;
+  top: -12px;
+  left: -8%;
+  width: 116%;
+  height: 28px;
+  background: linear-gradient(
+    to right,
+    transparent 0%,
+    rgba(185, 220, 169, 0.7) 20%,
+    rgba(255, 255, 255, 0.5) 50%,
+    rgba(136, 132, 201, 0.6) 80%,
+    transparent 100%
+  );
+  border-radius: 50% 50% 40% 60% / 55% 55% 45% 45%;
+  animation: fill-water-wave 3s ease-in-out infinite;
+  box-shadow:
+    0 -3px 12px rgba(185, 220, 169, 0.4),
+    0 -1px 4px rgba(255, 255, 255, 0.6);
+}
+
+/* Secondary ripple for more water movement */
+.fill-up-water-fill::after {
+  content: '';
+  position: absolute;
+  top: -6px;
+  left: -4%;
+  width: 108%;
+  height: 18px;
+  background: linear-gradient(to right, rgba(255, 255, 255, 0.25), transparent 40%, transparent 60%, rgba(255, 255, 255, 0.2));
+  border-radius: 50%;
+  animation: fill-water-ripple 2.5s ease-in-out 0.3s infinite;
+  pointer-events: none;
+}
+
+@keyframes fill-water-wave {
+  0%, 100% { transform: translateX(0) translateY(0) scaleY(1); }
+  25% { transform: translateX(5px) translateY(-3px) scaleY(1.05); }
+  50% { transform: translateX(-4px) translateY(2px) scaleY(0.98); }
+  75% { transform: translateX(3px) translateY(-2px) scaleY(1.02); }
+}
+
+@keyframes fill-water-ripple {
+  0%, 100% { opacity: 0.6; transform: translateX(0) scaleX(1); }
+  50% { opacity: 1; transform: translateX(8px) scaleX(1.02); }
+}
+
+.fill-up-screen.pour .fill-up-water-fill {
+  height: 100%;
+}
+
+/* Splashes during fill */
+.fill-up-splash {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: rgba(136, 132, 201, 0.8);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.fill-up-screen.pour .fill-up-splash.fill-up-s1 { left: 35%; top: 18%; animation: fill-splash-down 0.6s ease-out 0.4s forwards; }
+.fill-up-screen.pour .fill-up-splash.fill-up-s2 { left: 52%; top: 22%; animation: fill-splash-down 0.5s ease-out 0.6s forwards; }
+.fill-up-screen.pour .fill-up-splash.fill-up-s3 { left: 68%; top: 15%; animation: fill-splash-down 0.55s ease-out 0.5s forwards; }
+.fill-up-screen.pour .fill-up-splash.fill-up-s4 { left: 42%; top: 25%; animation: fill-splash-down 0.5s ease-out 0.7s forwards; }
+.fill-up-screen.pour .fill-up-splash.fill-up-s5 { left: 58%; top: 20%; animation: fill-splash-down 0.6s ease-out 0.55s forwards; }
+
+@keyframes fill-splash-down {
+  0% { opacity: 0; transform: translateY(-10px) scale(0.2); }
+  40% { opacity: 0.9; transform: translateY(8px) scale(0.9); }
+  100% { opacity: 0; transform: translateY(25px) scale(0.3); }
+}
+
+/* Drain phase - liquid exits toward bottom */
+.fill-up-screen.drain .fill-up-water-fill {
+  height: 0 !important;
+  top: auto !important;
+  bottom: 0 !important;
+  transition: height 1.2s ease-in;
+}
+
+.content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: 2rem;
+  text-align: center;
+}
+
+.content--blown .candle-flame {
+  animation: flameOut 0.6s ease-out forwards;
+}
+
+.content--link {
+  gap: 1.5rem;
+}
+
+/* Happy then Birthday, one by one from top; candle as the "i" in Birthday */
+.title-line {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: baseline;
+  gap: 0.35em 0.5em;
+  font-size: clamp(2rem, 8vw, 4rem);
+  font-weight: 700;
+  color: #2c3d5c;
+  text-shadow: 0 2px 20px rgba(255, 255, 255, 0.8);
+  line-height: 1.2;
+}
+
+.title-word {
+  transform: translateY(-200%);
+  opacity: 0;
+}
+
+.title-word--first {
+  animation: popDown 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) 0.3s forwards;
+}
+
+.title-word--second {
+  animation: popDown 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) 0.85s forwards;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.08em;
+}
+
+/* Candle inline (replaces "i" in Birthday) */
+.candle-inline {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  vertical-align: middle;
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  line-height: 0;
+}
+
+.candle-inline:disabled {
+  cursor: default;
+}
+
+.candle-inline .candle-flame {
+  width: 0.22em;
+  height: 0.36em;
+  min-width: 10px;
+  min-height: 16px;
+  background: radial-gradient(ellipse 60% 100% at 50% 0%, #ffdb6b, #ff9a3c 40%, #e85d04 80%);
+  border-radius: 50% 50% 45% 45%;
+  box-shadow: 0 0 8px rgba(255, 200, 100, 0.8);
+  animation: flicker 0.15s ease-in-out infinite alternate;
+}
+
+.candle-inline--out .candle-flame {
+  animation: none;
+  opacity: 0;
+  transform: scale(0.3);
+}
+
+.candle-inline .candle-stick {
+  width: 0.12em;
+  height: 0.32em;
+  min-width: 5px;
+  min-height: 14px;
+  background: linear-gradient(90deg, #c9a86c, #e8d5a3, #c9a86c);
+  border-radius: 2px;
+  margin-top: -1px;
+}
+
+@keyframes flicker {
+  from {
+    transform: scaleX(1) scaleY(1);
+  }
+  to {
+    transform: scaleX(1.08) scaleY(0.96);
+  }
+}
+
+@keyframes flameOut {
+  to {
+    opacity: 0;
+    transform: scale(0.2);
+  }
+}
+
+.cake-wrap {
+  position: relative;
+  display: inline-block;
+}
+
+.cake {
+  font-size: clamp(4rem, 15vw, 8rem);
+  line-height: 1;
+  transform: translateY(200%);
+  opacity: 0;
+  animation: popUp 1s cubic-bezier(0.34, 1.56, 0.64, 1) 1.1s forwards;
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.2));
+}
+
+.blow-hint {
+  margin-top: 0.5rem;
+  opacity: 0;
+  animation: fadeIn 0.5s ease 2s forwards;
+}
+
+.blow-hint p {
+  font-size: 1.1rem;
+  color: #2c3d5c;
+  margin: 0 0 0.5rem 0;
+  font-weight: 500;
+}
+
+.btn-mic {
+  display: inline-block;
+  padding: 0.4rem 0.9rem;
+  font-family: inherit;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #677ab4;
+  background: rgba(255, 255, 255, 0.95);
+  border: 2px solid #677ab4;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.btn-mic:hover {
+  background: #677ab4;
+  color: #fff;
+}
+
+.mic-on,
+.mic-err {
+  display: block;
+  font-size: 0.9rem;
+  margin-top: 0.35rem;
+}
+
+.mic-on {
+  color: #2c3d5c;
+}
+
+.mic-err {
+  color: #a03030;
+}
+
+@keyframes popDown {
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes popUp {
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
+}
+
+/* First page: floating blueberries (original style — gentle drift, not toward middle) */
+.floating-blueberries-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.floating-blueberry {
+  position: absolute;
+  left: var(--left);
+  top: var(--top);
+  width: calc(var(--size) * 28px);
+  height: calc(var(--size) * 28px);
+  background: radial-gradient(circle at 30% 30%, #8884c9, #677ab4 50%, #4a5a7a);
+  border-radius: 50%;
+  box-shadow:
+    inset -2px -2px 4px rgba(0, 0, 0, 0.2),
+    inset 2px 2px 4px rgba(255, 255, 255, 0.15),
+    0 2px 8px rgba(0, 0, 0, 0.15);
+  animation: floating-float var(--duration) ease-in-out var(--delay) infinite;
+}
+
+.floating-blueberry::before {
+  content: '';
+  position: absolute;
+  top: 15%;
+  left: 25%;
+  width: 25%;
+  height: 25%;
+  background: rgba(255, 255, 255, 0.4);
+  border-radius: 50%;
+}
+
+@keyframes floating-float {
+  0%, 100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  25% {
+    transform: translate(var(--drift), -35px) rotate(6deg);
+  }
+  50% {
+    transform: translate(calc(var(--drift) * -0.6), -70px) rotate(-4deg);
+  }
+  75% {
+    transform: translate(calc(var(--drift) * 0.8), -35px) rotate(3deg);
+  }
+}
+
+/* First page only: swirl blueberries — trig spiral toward center */
+.swirl-blueberries-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.swirl-blueberries-bg::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 120px;
+  height: 120px;
+  margin: -60px 0 0 -60px;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.95) 0%, rgba(185, 220, 169, 0.5) 40%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.swirl-blueberry {
+  position: fixed;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, #8884c9, #677ab4 50%, #4a5a7a);
+  box-shadow:
+    inset -2px -2px 4px rgba(0, 0, 0, 0.2),
+    inset 2px 2px 4px rgba(255, 255, 255, 0.15),
+    0 2px 8px rgba(0, 0, 0, 0.15);
+  pointer-events: none;
+}
+
+.swirl-blueberry::before {
+  content: '';
+  position: absolute;
+  top: 15%;
+  left: 25%;
+  width: 25%;
+  height: 25%;
+  background: rgba(255, 255, 255, 0.4);
+  border-radius: 50%;
+}
+
+/* Last page: pops up when matcha transition finishes; floating blueberries */
+.link-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: linkScreenPop 0.65s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.link-screen .floating-blueberries-bg {
+  z-index: 0;
+}
+
+.link-screen .content--link {
+  z-index: 1;
+}
+
+@keyframes linkScreenPop {
+  0% {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Link screen CTA */
+.cta {
+  display: inline-block;
+  padding: 0.75rem 1.75rem;
+  font-family: inherit;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #fff;
+  background: linear-gradient(135deg, #677ab4, #8884c9);
+  border: none;
+  border-radius: 999px;
+  text-decoration: none;
+  box-shadow: 0 4px 20px rgba(103, 122, 180, 0.45);
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  opacity: 0;
+  transform: scale(0.9);
+  animation: ctaPopIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) 0.25s forwards;
+}
+
+@keyframes ctaPopIn {
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.cta--big {
+  padding: 1rem 2rem;
+  font-size: 1.35rem;
+  box-shadow: 0 6px 24px rgba(103, 122, 180, 0.5);
+}
+
+.cta:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 24px rgba(103, 122, 180, 0.55);
+}
+
+.cta--big:hover {
+  box-shadow: 0 8px 28px rgba(103, 122, 180, 0.6);
+}

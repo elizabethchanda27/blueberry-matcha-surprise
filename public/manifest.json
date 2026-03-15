@@ -1,0 +1,10 @@
+{
+  "name": "Blueberry Matcha Surprise",
+  "short_name": "Birthday",
+  "description": "Happy Birthday!",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#b9dca9",
+  "theme_color": "#677ab4",
+  "orientation": "portrait-primary"
+}
