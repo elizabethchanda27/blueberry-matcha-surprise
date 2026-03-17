@@ -5,8 +5,7 @@ import SwirlBlueberries from './SwirlBlueberries'
 import confetti from 'canvas-confetti'
 import './App.css'
 
-// Tester: use '#' so link stays on same page. Replace with real app URL when ready.
-const APP_URL = '#'
+const APP_URL = 'https://bloomly-birthday-app.vercel.app/'
 
 const WAIT_AFTER_BLOW_MS = 2500
 const POUR_MS = 2200
